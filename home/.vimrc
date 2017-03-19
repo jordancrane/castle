@@ -2,7 +2,7 @@
 
 " Start dein {{{
 if &compatible
-  set nocompatible
+    set nocompatible
 endif
 set runtimepath^=~/.vim/dein/repos/github.com/Shougo/dein.vim/
 call dein#begin('~/.vim/dein/')
@@ -58,12 +58,77 @@ call dein#add('editorconfig/editorconfig-vim')
 noremap <F3> :Autoformat<CR>
 " }}}
 
-" You Complete Me {{{
-"let g:EditorConfig_exclude_patterns = ['fugitive://.*']
-"let g:ycm_python_binary_path = '/usr/bin/python3'
-"let g:ycm_path_to_python_interpreter = '/usr/bin/python3'
-"let g:ycm_server_keep_logfiles = 1
-"let g:ycm_server_log_level = 'debug'
+" NeoComplete {{{
+"Note: This option must be set in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
+"" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+            \ 'default' : '',
+            \ 'vimshell' : $HOME.'/.vimshell_hist',
+            \ 'scheme' : $HOME.'/.gosh_completions'
+            \ }
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+"inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+    return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+    " For no inserting <CR> key.
+    "return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+"inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+"inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+
+" AutoComplPop like behavior.
+"let g:neocomplete#enable_auto_select = 1
+
+" Shell like behavior(not recommended).
+"set completeopt+=longest
+"let g:neocomplete#enable_auto_select = 1
+"let g:neocomplete#disable_auto_complete = 1
+"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+    let g:neocomplete#sources#omni#input_patterns = {}
+endif
+"let g:neocomplete#sources#omni#input_patterns.php = '[^.\t]->\h\w*\|\h\w*::'
+"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:]*\t]\%(\.\|->\)'
+"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:]*\t]\%(\.\|->\)\|\h\w*::'
+
+" For perlomni.vim setting.
+" https://github.com/c9s/perlomni.vim
+let g:neocomplete#sources#omni#input_patterns.perl ='\h\w*->\h\w*\|\h\w*::'
 " }}}
 
 " Appearance {{{
@@ -94,17 +159,21 @@ set hidden
 
 " To open a new empty buffer
 " This replaces :tabnew which I used to bind to this mapping
-nnoremap <leader>n :enew<CR>
+nnoremap <C-c> <Nop>
+nnoremap <C-c> :enew<CR>
 
 " Move to the next buffer
-nnoremap <leader>l :bnext<CR>
+nnoremap <C-n> <Nop>
+nnoremap <C-n> :bnext<CR>
 
 " Move to the previous buffer
-nnoremap <leader>h :bprevious<CR>
+nnoremap <C-p> <Nop>
+nnoremap <C-p> :bprevious<CR>
 
 " Close the current buffer and move to the previous one
 " This replicates the idea of closing a tab
-nnoremap <leader>bq :bp <BAR> bd #<CR>
+nnoremap <C-x> <Nop>
+nnoremap <C-x> :bp <BAR> bw #<CR>
 
 " Show all open buffers and their status
 nnoremap <leader>bl :ls<CR>
@@ -171,6 +240,9 @@ imap <C-f> <Bslash>
 " Map jk to ESC
 inoremap jk <ESC>
 
+" Press F4 to toggle highlighting on/off, and show current value.
+noremap <F4> :set hlsearch! hlsearch?<CR>
+
 "  }}}
 
 " UI Settings {{{
@@ -178,6 +250,7 @@ set number
 set cursorline
 set breakindent
 set showmatch
+set hls
 syntax on
 
 " Yank/put text via system clipboard
@@ -197,42 +270,55 @@ nnoremap <leader>a za
 
 " fold based on indent level
 set foldmethod=indent
-"  }}} 
+"  }}}
 
 " Autogroups {{{
-  set nocp
-  augroup configgroup
+set nocp
+augroup configgroup
     " clears present autocommands
-    autocmd!    
+    autocmd!
     autocmd VimEnter * highlight clear SignColumn
     " Stip whitespace
-    "autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.java,*.md :call <SID>StripTrailingWhitespaces() 
+    "autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.java,*.md :call <SID>StripTrailingWhitespaces()
     " Syntax folding for c, cpp
-    autocmd FileType python setlocal foldmethod=indent      
-  augroup END
+    autocmd FileType python setlocal foldmethod=indent
+augroup END
 " }}}
 
 " Functions {{{
 " Word Count
 function! WC()
-  let filename = expand("%")
-  let cmd = "detex " . filename . " | wc -w | tr -d [:space:]"
-  let result = system(cmd)
-  echo result . " words"
+    let filename = expand("%")
+    let cmd = "detex " . filename . " | wc -w | tr -d [:space:]"
+    let result = system(cmd)
+    echo result . " words"
 endfunction
 
 " Backspace sucks
 func! Backspace()
-  if col('.') == 1
-    if line('.')  != 1
-      return  "\<ESC>kA\<Del>"
+    if col('.') == 1
+        if line('.')  != 1
+            return  "\<ESC>kA\<Del>"
+        else
+            return ""
+        endif
     else
-      return ""
+        return "\<Left>\<Del>"
     endif
-  else
-    return "\<Left>\<Del>"
-  endif
 endfunc
+
+" Enter toggles hlsearch
+let g:highlighting = 0
+function! Highlighting()
+    if g:highlighting == 1 && @/ =~ '^\\<'.expand('<cword>').'\\>$'
+        let g:highlighting = 0
+        return ":silent nohlsearch\<CR>"
+    endif
+    let @/ = '\<'.expand('<cword>').'\>'
+    let g:highlighting = 1
+    return ":silent set hlsearch\<CR>"
+endfunction
+nnoremap <silent> <expr> <leader><CR> Highlighting()
 
 " Strip Tailing Whitespace
 "fun! <SID>StripTrailingWhitespaces()
