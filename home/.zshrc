@@ -30,7 +30,7 @@ alias tmux="tmux -2"
 alias c="clear"
 alias s="git status"
 alias ak="ack-grep"
-alias vims="vim --servername vim-server"
+alias vim="vim --servername vim-server"
 alias vimr="vim --servername vim-server --remote "
 
 #alias cd to cd+ls
