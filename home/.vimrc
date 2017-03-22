@@ -48,6 +48,8 @@ call dein#add('xolox/vim-easytags')
 call dein#add('xolox/vim-misc')
 " Tag navigation sidebar
 call dein#add('majutsushi/tagbar')
+" Search Spotify from within vim
+call dein#add('takac/vim-spotifysearch')
 
 " Appearance {{{
 " Colorschemes
@@ -82,6 +84,52 @@ call dein#add('maksimr/vim-jsbeautify')
 call dein#add('editorconfig/editorconfig-vim')
 " }}}
 " }}}
+
+" Mappings {{{
+" <space> is leader
+nnoremap <Space> <Nop>
+let mapleader = " "
+
+" toggle gundo
+nnoremap <leader>u :GundoToggle<CR>
+
+" super quick search and replace
+" not sure what this one does, commenting until I understand further
+"nnoremap <leader>rl :'{,'}s/\<<c-r>=expand("<cword>")<cr>\>/
+" globally replace current word
+nnoremap <leader>rg    j  :%s/\<<c-r>=expand("<cword>")<cr>\>/
+
+" search for visually hightlighted text
+vnoremap <leader><CR> y<ESC>/<c-r>"<CR>:set hlsearch<CR>
+
+" toggle indent Guides
+nnoremap <leader>i :IndentGuidesToggle<CR>
+
+" save session
+"nnoremap <leader>s :mksession<CR>
+
+" highlight last insrted text
+nnoremap gV `[v`]
+
+" Ctrl-f is backslash
+imap <C-f> <Bslash>
+
+" Map jk to ESC
+inoremap jk <ESC>
+
+" Press F4 to toggle highlighting on/off, and show current value.
+noremap <F4> :set hlsearch! hlsearch?<CR>
+
+
+" Use enter to go to line number
+" (instead of :<line number>, type <line number><CR>)
+nnoremap <CR> G
+
+" Quickly edit and source vimrc
+nnoremap <leader>ec :vsplit ~/.vimrc<cr>
+noremap <leader>rc :source ~/.vimrc<cr>
+
+"  }}}
 
 " Appearance {{{
 " colorscheme
@@ -175,16 +223,16 @@ endif
 " EasyMotion {{{
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
-map <leader> <Plug>(easymotion-prefix)
+"map <TAB> <Plug>(easymotion-prefix)
 
 " Jump to anywhere you want with minimal keystrokes, with just one key
 " binding.
 " `s{char}{label}`
-nmap s <Plug>(easymotion-overwin-f)
+nmap <leader>s <Plug>(easymotion-overwin-f)
 " or
 " `s{char}{char}{label}`
 " Need one more keystroke, but on average, it may be more comfortable.
-nmap s <Plug>(easymotion-overwin-f2)
+nmap <leader>s <Plug>(easymotion-overwin-f2)
 
 " Turn on case insensitive feature
 let g:EasyMotion_smartcase = 1
@@ -270,38 +318,6 @@ set autoindent
 set smartindent
 filetype indent on
 " }}}
-
-" Mappings {{{
-" <space> is leader
-nnoremap <Space> <Nop>
-let mapleader = " "
-
-" toggle gundo
-nnoremap <leader>u :GundoToggle<CR>
-
-" super quick search and replace
-nnoremap <leader>rl :'{,'}s/\<<C-r>=expand("<cword>")<CR>\>/
-nnoremap <leader>rg    j  :%s/\<<C-r>=expand("<cword>")<CR>\>/
-
-" toggle indent Guides
-nnoremap <leader>i :IndentGuidesToggle<CR>
-
-" save session
-nnoremap <leader>s :mksession<CR>
-
-" highlight last insrted text
-nnoremap gV `[v`]
-
-" Ctrl-f is backslash
-imap <C-f> <Bslash>
-
-" Map jk to ESC
-inoremap jk <ESC>
-
-" Press F4 to toggle highlighting on/off, and show current value.
-noremap <F4> :set hlsearch! hlsearch?<CR>
-
-"  }}}
 
 " Movement {{{
 " move up and down by visual line
@@ -426,6 +442,7 @@ noremap <leader>p "+p
 " End dein & modeline {{{
 " Required:
 call dein#end()
+set nohlsearch
 set modeline
 set modelines=1
 " }}}
