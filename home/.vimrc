@@ -48,8 +48,6 @@ call dein#add('xolox/vim-easytags')
 call dein#add('xolox/vim-misc')
 " Tag navigation sidebar
 call dein#add('majutsushi/tagbar')
-" Search Spotify from within vim
-call dein#add('takac/vim-spotifysearch')
 
 " Appearance {{{
 " Colorschemes
@@ -59,8 +57,8 @@ call dein#add('chriskempson/base16-vim')
 " Minimal user interface
 call dein#add('junegunn/goyo.vim')
 call dein#add('amix/vim-zenroom2')
-" Visual representation of indents
-call dein#add('nathanaelkane/vim-indent-guides')
+" Indent lines
+call dein#add('Yggdroot/indentLine')
 " }}}
 
 " Syntax Highlighters {{{
@@ -317,6 +315,12 @@ set expandtab
 set autoindent
 set smartindent
 filetype indent on
+" }}}
+
+" Indent Lines {{{
+let g:indentLine_enabled = 1
+"┆, ¦, |
+let g:indentLine_char = '¦'
 " }}}
 
 " Movement {{{
