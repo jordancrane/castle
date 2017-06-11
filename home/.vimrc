@@ -14,7 +14,7 @@ call dein#add('Shougo/unite.vim')
 call dein#add('gcmt/wildfire.vim')
 " git integrations
 call dein#add('tpope/vim-fugitive')
-" File tree browser 
+" File tree browser
 call dein#add('scrooloose/nerdtree')
 " Hakcer news
 call dein#add('ryanss/vim-hackernews')
@@ -318,6 +318,7 @@ filetype indent on
 " }}}
 
 " Indent Lines {{{
+let g:indentLine_faster = 1
 let g:indentLine_enabled = 1
 "┆, ¦, |
 let g:indentLine_char = '¦'
