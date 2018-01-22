@@ -62,3 +62,6 @@ export PATH=$PATH:~/.cargo/bin:/usr/bin/python3:~/scripts
 export VISUAL=vim
 export EDITOR=$VISUAL
 export GTEST_DIR=/opt/googletest
+
+#Harmonic stuff
+export PATH=$PATH:/opt/intel/vtune_amplifier_xe/bin64

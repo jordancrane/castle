@@ -53,6 +53,7 @@ call dein#add('majutsushi/tagbar')
 " Colorschemes
 call dein#add('vim-scripts/peaksea')
 call dein#add('junegunn/seoul256.vim')
+call dein#add('arcticicestudio/nord-vim')
 call dein#add('chriskempson/base16-vim')
 " Minimal user interface
 call dein#add('junegunn/goyo.vim')
@@ -132,7 +133,7 @@ noremap <leader>rc :source ~/.vimrc<cr>
 " Appearance {{{
 " colorscheme
 let base16colorspace=256
-colorscheme seoul256
+colorscheme nord
 
 " enable indent guide
 let g:indent_guides_auto_colors = 0
